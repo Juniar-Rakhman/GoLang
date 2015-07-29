@@ -6,21 +6,31 @@ type Salutation struct {
 	greeting string
 }
 
-func Greet(salutation Salutation) {
-	message, alternate := CreateMessage(salutation.name, salutation.greeting)
+type Print func(string) ()
 
-	fmt.Println(message)
-	fmt.Println(alternate)
+func Greet(salutation Salutation, do func(string)) {
+	message, alternate := CreateMessage(salutation.name, salutation.greeting, "Hi", "yo")
+	do(message)
+	do(alternate)
 }
 
-func CreateMessage(name, greeting string) (message string, alternate string) {
-	message = greeting + " "+ name
+func Print(s string) {
+	fmt.Print(s)
+}
+
+func PrintLine(s string) {
+	fmt.Println(s)
+}
+
+func CreateMessage(name string, greeting ...string) (message string, alternate string) {
+	fmt.Println(len(greeting))
+	message = greeting[2] + " "+ name
 	alternate = "Hey " + name
 	return
 }
 
-
 func main() {
 	var s = Salutation{"Bob", "Hello"}
-	Greet(s)
+	Greet(s, Print)
+	Greet(s, PrintLine)
 }
