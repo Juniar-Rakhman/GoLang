@@ -18,6 +18,18 @@ func Greet(salutation Salutation, do Printer, isFormal bool) {
 	}
 }
 
+func GetPrefix(name string) (prefix string) {
+
+	switch name {
+		case "bob" : prefix = "mr "
+		case "marry" : prefix = "dr "
+		case "joe" : prefix = "sir "
+		default: prefix = "Dude "
+	}
+
+	return
+}
+
 func CreatePrintFunction(custom string) Printer {
 	return func(s string) {
 		fmt.Println(s + custom)
