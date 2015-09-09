@@ -9,25 +9,42 @@ type Salutation struct {
 
 type Printer func(string) ()
 
-func Greet(salutation Salutation, do Printer, isFormal bool) {
+func Greet(salutation Salutation, print Printer, isFormal bool) {
 	message, alternate := CreateMessage(salutation.Name, salutation.Greeting, "Hi", "yo")
-	if prefix := "Mr "; isFormal {
-		do(prefix + message)
+	if prefix := GetPrefix(salutation.Name); isFormal {
+		print(prefix + message)
 	} else {
-		do(alternate)
+		print(alternate)
 	}
 }
 
 func GetPrefix(name string) (prefix string) {
 
 	switch name {
-		case "bob" : prefix = "mr "
-		case "marry" : prefix = "dr "
-		case "joe" : prefix = "sir "
-		default: prefix = "Dude "
+		case "Bob" :
+			prefix = "mr "
+		case "Marry" :
+			prefix = "dr "
+		case "Joe","Amy" :
+			prefix = "sir "
+		default:
+			prefix = "Dude "
 	}
 
 	return
+}
+
+func TypeSwitchTest(x interface{}) {
+	switch x.(type) {
+	case int:
+		fmt.Println("int")
+	case string:
+		fmt.Println("string")
+	case Salutation:
+		fmt.Println("saluation")
+	default:
+		fmt.Println("uknown")
+	}
 }
 
 func CreatePrintFunction(custom string) Printer {
@@ -39,7 +56,7 @@ func CreatePrintFunction(custom string) Printer {
 //...means we are passing unknown number of var
 func CreateMessage(name string, greeting ...string) (message string, alternate string) {
 	fmt.Println(len(greeting))
-	message = greeting[2] + " "+ name
+	message = greeting[2] + " " + name
 	alternate = "Hey " + name
 	return
 }
